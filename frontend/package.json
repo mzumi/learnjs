@@ -11,7 +11,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.243.1",
     "vue": "^2.5.2",
+    "vue-google-signin-button": "^1.0.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
     "webpack-s3-plugin": "^1.0.0-rc.0"
