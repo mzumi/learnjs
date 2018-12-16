@@ -43,6 +43,7 @@ export default {
   methods: {
     checkAnswer () {
       const test = this.problem.code.replace('__', this.answer) + '; problem();'
+      // eslint-disable-next-line
       this.result = eval(test) ? 'Correct!' : 'Incorrect!'
     }
   },

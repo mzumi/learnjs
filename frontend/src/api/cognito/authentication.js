@@ -1,10 +1,12 @@
 import AWS from 'aws-sdk'
 import AWSService from '../aws_service'
+import googleClientApi from 'google-client-api'
 
 const POOL_ID = 'ap-northeast-1:3b211a99-4a6d-46fc-bde7-8de8cc8b0676'
 
 export default class extends AWSService {
-  refresh () {
+  async refresh () {
+    const gapi = await googleClientApi()
     return gapi.auth2.getAuthInstance().signIn({
       prompt: 'login'
     }).then(userUpdate => {
