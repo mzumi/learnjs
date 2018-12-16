@@ -3,7 +3,9 @@ import Router from 'vue-router'
 
 import Landing from '@/components/Landing'
 import Problem from '@/components/Problem'
+import GSignInButton from 'vue-google-signin-button'
 
+Vue.use(GSignInButton)
 Vue.use(Router)
 
 const parseProblemNumber = (route) => {
