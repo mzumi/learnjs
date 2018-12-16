@@ -36,3 +36,44 @@ resource "aws_iam_role" "authenticated" {
 
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
+
+data "aws_iam_policy_document" "dynamodb_role_policy" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:DeleteItem",
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:Query",
+      "dynamodb:UpdateItem",
+    ]
+
+    resources = [
+      "${aws_dynamodb_table.answers.arn}",
+    ]
+
+    condition {
+      test     = "ForAllValues:StringEquals"
+      variable = "dynamodb:LeadingKeys"
+
+      values = [
+        "$${cognito-identity.amazonaws.com:sub}",
+      ]
+    }
+  }
+}
+
+resource "aws_iam_policy" "table_access" {
+  name = "learnjs_table_access"
+
+  policy = "${data.aws_iam_policy_document.dynamodb_role_policy.json}"
+}
+
+resource "aws_iam_policy_attachment" "table_access_attach" {
+  name       = "dynamodb-attachment"
+  roles      = ["${aws_iam_role.authenticated.name}"]
+  policy_arn = "${aws_iam_policy.table_access.arn}"
+}
